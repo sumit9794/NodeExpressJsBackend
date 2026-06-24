@@ -1,11 +1,20 @@
-const express = require('express');
+const express = require("express");
+require("dotenv").config();
+
+const connectDB = require("./config/db");
+
+connectDB();
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Hello World from Express With Docker New');
-});
+app.use(express.json());
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/products", require("./routes/productRoutes"));
+app.use("/api/categories", require("./routes/categoryRoutes"));
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
